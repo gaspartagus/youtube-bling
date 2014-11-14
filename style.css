@@ -1,7 +1,8 @@
 #avion{
   position: fixed;
   transform-origin: 50% 50%;
-  /*background-color: red;*/
+  background-color: black;
+  opacity: 0.03;
   /*background-image: url('http://brasspackers.org/paperplane/avion/avion8.png');*/
   width: 80px;
   height: 80px;
@@ -12,4 +13,8 @@
   position: absolute;
   top: -40px;
   left: -40px;
+  width: 80px;
+  height: 80px;
+  background-color: black;
+  opacity: 0.03;
 }

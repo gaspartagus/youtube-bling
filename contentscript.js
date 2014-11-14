@@ -2,14 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-var regex = /sandwich/gi;
-matches = document.body.innerText.match(regex);
-if (matches) {
-  var payload = {
-    count: matches.length    // Pass the number of matches back.
-  };
-  chrome.extension.sendRequest(payload, function(response) {});
-}
 $('body').append('<div id="avion"></div>');
 
 
@@ -27,8 +19,8 @@ vx = 0;
 vy = 0;
 ax = 0;
 ay = 0;
-mousex = 600;
-mousey = 350;
+mousex = 100;
+mousey = 100;
 nImage1 = 0;
 
 dt = 8;
@@ -76,7 +68,7 @@ intervalleID = setInterval(
 
 	    nImage2 = Math.max(1, Math.min(21, Math.round(2500 * (-ay * vx + ax * vy) / (Nv * Nv * Nv)) + 11));
 	    if (nImage2 != nImage1)
-	        avion.html("<img src='http://brasspackers.org/paperplane/avion/avion" + Math.max(1, Math.min(21, Math.round(2500 * (-ay * vx + ax * vy) / (Nv * Nv * Nv)) + 11)) + ".png' >");
+	        // avion.html("<img src='http://brasspackers.org/paperplane/avion/flus" + Math.max(1, Math.min(21, Math.round(2500 * (-ay * vx + ax * vy) / (Nv * Nv * Nv)) + 11)) + ".png' >");
 	    nImage1 = nImage2;
 	    $("#avion img").css("transform", "rotate(" + angle + "rad)");
 
@@ -90,6 +82,6 @@ intervalleID = setInterval(
     {
         //$("#temoin").text("e.pageX: " + e.pageX + ", e.pageY: " + e.pageY);
         mousex = e.pageX;
-        mousey = e.pageY;
+        mousey = e.pageY-document.body.scrollTop;
     });
 
