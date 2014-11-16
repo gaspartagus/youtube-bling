@@ -10,7 +10,6 @@
     "default_popup": "popup.html"
   },
   "permissions" : [
-    "infobars",
     "activeTab"
   ],
   "icons" : {
@@ -21,10 +20,10 @@
   "content_scripts" : [
     {
       "matches" : [
-         "http://*/*",
-         "https://*/*"
+         "http://www.youtube.com/*",
+         "https://www.youtube.com/*"
       ],
-      "js" : [ "jquery.min.js" ],
+      "js" : [ "jquery.min.js", "glow.js" ],
       "css" : [ "style.css" ],
       "run_at" : "document_idle",
       "all_frames" : false
