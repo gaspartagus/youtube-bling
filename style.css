@@ -18,3 +18,26 @@
   background-color: black;
   opacity: 0.03;
 }
+
+#theater-background{
+  -webkit-transition-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+#player-api,
+.html5-video-player,
+.html5-player-chrome,
+.html5-video-container {
+  background-color: transparent !important;
+  overflow: visible !important;
+}
+
+.ytp-button-bling{
+  width: 20px;
+  height: 29px;
+  float: right !important;
+  color: rgb(142, 142, 142);
+  text-shadow: 0px 1px 0px black;
+}
+
+

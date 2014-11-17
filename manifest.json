@@ -1,34 +1,24 @@
 {
-  "name" : "SandwichBar",
-  "version" : "1.0.1",
-  "description" : "Shows an infobar on pages which contain the word 'sandwich'",
-  "background" : {
-    "scripts": ["background.js"]
-  },
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
-  },
+  "name" : "Youtube Bling",
+  "version" : "0.1",
+  "description" : "Bling bling",
   "permissions" : [
     "activeTab"
   ],
   "icons" : {
-    "16" : "sandwich-16.png",
-    "48" : "sandwich-48.png",
-    "128" : "sandwich-128.png"
+    "128" : "youtube.png"
   },
   "content_scripts" : [
     {
       "matches" : [
-         "http://www.youtube.com/*",
-         "https://www.youtube.com/*"
+         "http://www.youtube.com/watch*",
+         "https://www.youtube.com/watch*"
       ],
       "js" : [ "jquery.min.js", "glow.js" ],
       "css" : [ "style.css" ],
       "run_at" : "document_idle",
-      "all_frames" : false
+      "all_frames" : true
     }
   ],
-  "web_accessible_resources": ["sandwich-128.png"],
   "manifest_version": 2
 }

@@ -1,4 +1,4 @@
-console.log("glow");
+console.log("glow",$("body"));
 
 
 function sum(arr){
@@ -60,8 +60,8 @@ function rgbToHsl(r, g, b){
 
 
 var ratio = 2,
-    lumRatios = [1,1.5,1], // luminance ratio
-    satRatios = [1,1.5,1.2], // saturation ratios
+    lumRatios = [1,1.2,1.8], // luminance ratio
+    satRatios = [1,1.2,1.8], // saturation ratios
     // 0: black, 1: no change, Infinity: pure color
     width = 100; // sampling ratio
 
@@ -73,14 +73,7 @@ var canvas = document.createElement('canvas');
 
 var back = document.getElementById("theater-background");
 
-var bar = document.getElementsByClassName("html5-player-chrome")[0]
-
-var videoBack = document.getElementsByClassName("html5-video-container")[0]
-    // originalColor = back.css("background-color"); html5-video-player
-
-document.getElementsByClassName("html5-video-player")[0].style.backgroundColor = "transparent";
-
-document.getElementById("player-api").style.backgroundColor = "transparent"
+var bar = document.getElementsByClassName("html5-player-chrome")[0];
 
 var context = canvas.getContext('2d');
 
@@ -92,14 +85,12 @@ var context = canvas.getContext('2d');
 
 function setColor(rgb){
   back.style.backgroundColor = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
-  bar.style.backgroundColor = "transparent";
-  videoBack.style.backgroundColor = "transparent";
 }
 
 function create() {
 
   var enabled = false,
-      actions = ["Stop","Glow","Extend"],
+      actions = ["Stop","Extend","Glow"],
       action = 0;
 
   function snap() {
@@ -144,10 +135,10 @@ function create() {
 
     switch(action){
       case 1:
-        video.style.boxShadow = "0px 0px 100px rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
+        setColor(rgb);
       break;
       case 2:
-        setColor(rgb);
+        video.style.boxShadow = "0px 0px 100px rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
       break;
       default:
         video.style.boxShadow = "none";
@@ -162,7 +153,7 @@ function create() {
   this.trigger = function(){
 
     video.style.boxShadow = "none";
-    // back.css("background-color",originalColor);
+    back.style.backgroundColor = "transparent";
 
     action = (action+1) % actions.length;
     if(action) {
@@ -180,9 +171,8 @@ var glowObj = glow.create();
 
 // var button = $('<button>',{id: "glow",text: "Glow"});
 var button = document.createElement('button')
-button.setAttribute("class","ytp-button ytp-button-playlist");
-// button.innerHTML = "Glow";
-button.style.display = "block";
+button.setAttribute("class","ytp-button ytp-button-bling");
+button.innerHTML = "B";
 button.addEventListener("click",function(){
   console.log("click");
   glowObj.trigger();
