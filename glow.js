@@ -12,7 +12,7 @@ function mean(arr){
 function hslToRgb(h, s, l){
   var r, g, b;
 
-  if(s == 0){
+  if(s === 0){
     r = g = b = l; // achromatic
   }else{
     function hue2rgb(p, q, t){
@@ -63,38 +63,27 @@ var ratio = 2,
     lumRatios = [1,1.2,1.8], // luminance ratio
     satRatios = [1,1.2,1.8], // saturation ratios
     // 0: black, 1: no change, Infinity: pure color
-    width = 100; // sampling ratio
-
-
-
-var video = document.getElementsByTagName('video')[0];
-// var canvas = document.getElementById('ambi');
-var canvas = document.createElement('canvas');
-
-var back = document.getElementById("theater-background");
-
-var bar = document.getElementsByClassName("html5-player-chrome")[0];
-
-var context = canvas.getContext('2d');
-
-// Add a listener to wait for the 'loadedmetadata' state so the video's dimensions can be read
-// video.addEventListener('loadedmetadata', function() {
-//   console.log('loadedmetadata')
-//   ratio = video.videoWidth / video.videoHeight;
-// }, false);
-
-function setColor(rgb){
-  back.style.backgroundColor = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
-}
+    width = 100, // sampling ratio
+    actions = ["Stop","Extend","Glow"];
 
 function create() {
 
-  var enabled = false,
-      actions = ["Stop","Extend","Glow"],
-      action = 0;
+  var video = document.getElementsByTagName("video")[0];
+  // var canvas = document.getElementById('ambi');
+  var canvas = document.createElement("canvas");
+
+  var back = document.getElementById("theater-background");
+
+  var bar = document.getElementsByClassName("html5-player-chrome")[0];
+
+  var context = canvas.getContext("2d");
+
+  var action = 0;
 
   function snap() {
   	var debut = performance.now();
+
+    ratio = video.videoWidth/video.videoHeight;
 
     context.drawImage(video, 0, 0, width, width/ratio);
 
@@ -150,7 +139,7 @@ function create() {
     }
   }
 
-  this.trigger = function(){
+  function trigger(){
 
     video.style.boxShadow = "none";
     back.style.backgroundColor = "transparent";
@@ -161,27 +150,31 @@ function create() {
     }
     return actions[(action+1) % actions.length];
   }
-  return this;
-};
 
-window.glow = {'create':create};
+  function setColor(rgb){
+    back.style.backgroundColor = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
+  }
+
+  var button = document.createElement("button");
+  button.setAttribute("class","ytp-button ytp-button-bling");
+  button.innerHTML = "B";
+
+  button.addEventListener("click",function(){
+    console.log("click");
+    trigger();
+  });
+
+  bar.appendChild(button);
+}
+
+if(document.getElementsByTagName("video")){
+  create();
+}
+
+window.onhashchange = function(){
+  if(document.getElementsByTagName("video")){
+    create();
+  }
+}
 
 
-var glowObj = glow.create();
-
-// var button = $('<button>',{id: "glow",text: "Glow"});
-var button = document.createElement('button')
-button.setAttribute("class","ytp-button ytp-button-bling");
-button.innerHTML = "B";
-button.addEventListener("click",function(){
-  console.log("click");
-  glowObj.trigger();
-})
-bar.appendChild(button)
-// glowObj.trigger();
-// $(".html5-player-chrome").append(
-//   $('<button>',{
-//     id: 'errg',
-//     text: "iruhvfil",
-//     class: "ytp-button ytp-button-playlist"
-//   })
