@@ -64,7 +64,11 @@ var ratio = 2,
     satRatios = [1,1.2,1.8], // saturation ratios
     // 0: black, 1: no change, Infinity: pure color
     width = 100, // sampling ratio
-    actions = ["Stop","Extend","Glow"];
+    actions = ["Stop","Extend","Glow"],
+    action = 0,
+
+    href = location.href,
+    created = false;
 
 function create() {
 
@@ -78,61 +82,66 @@ function create() {
 
   var context = canvas.getContext("2d");
 
-  var action = 0;
-
   function snap() {
   	var debut = performance.now();
 
     ratio = video.videoWidth/video.videoHeight;
 
     context.drawImage(video, 0, 0, width, width/ratio);
-
-    var image = context.getImageData(0, 0, width, width/ratio);
-
-    var r = 0,
-    		g = 0,
-    		b = 0,
-    		n = 0;
-
-    for(var i = image.height-1; i>=0; i -= 1){
-    	for(var j = image.width-1; j>=0; j -= 1){
-    		n ++;
-    		r += image.data[((i*(image.width*4)) + (j*4)) + 0];
-    		g += image.data[((i*(image.width*4)) + (j*4)) + 1];
-    		b += image.data[((i*(image.width*4)) + (j*4)) + 2];
-    	}
+    var image;
+    try {
+      image = context.getImageData(0, 0, width, width/ratio);
+    } catch(err){
+      console.log("no video frame")
     }
-    r = Math.floor(r/n);
-    g = Math.floor(g/n);
-    b = Math.floor(b/n);
 
-    // Physiologic luminance parameter
-    // var luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    if(image){
+      var r = 0,
+          g = 0,
+          b = 0,
+          n = 0;
 
-    // convert rgb -> hue/saturation/luminance -> rgb
-    // to adjust luminance and saturation
-    var hsl = rgbToHsl(r,g,b);
-    var rgb = hslToRgb(
-      hsl[0],
-      Math.pow( hsl[1], 1/satRatios[action] ), // allows to saturate/fade the color for a better effect
-      Math.pow( hsl[2], 1/lumRatios[action] )
-    );
+      for(var i = image.height-1; i>=0; i -= 1){
+        for(var j = image.width-1; j>=0; j -= 1){
+          n ++;
+          r += image.data[((i*(image.width*4)) + (j*4)) + 0];
+          g += image.data[((i*(image.width*4)) + (j*4)) + 1];
+          b += image.data[((i*(image.width*4)) + (j*4)) + 2];
+        }
+      }
+      r = Math.floor(r/n);
+      g = Math.floor(g/n);
+      b = Math.floor(b/n);
 
-    // console.log(Math.floor((performance.now()-debut)*1), image.width, image.height);
+      // Physiologic luminance parameter
+      // var luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-    // console.log(r,g,b, debut-performance.now())
+      // convert rgb -> hue/saturation/luminance -> rgb
+      // to adjust luminance and saturation
+      var hsl = rgbToHsl(r,g,b);
+      var rgb = hslToRgb(
+        hsl[0],
+        Math.pow( hsl[1], 1/satRatios[action] ), // allows to saturate/fade the color for a better effect
+        Math.pow( hsl[2], 1/lumRatios[action] )
+      );
 
-    switch(action){
-      case 1:
-        setColor(rgb);
-      break;
-      case 2:
-        video.style.boxShadow = "0px 0px 100px rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
-      break;
-      default:
-        video.style.boxShadow = "none";
-        // back.css("background-color",originalColor);
+      // console.log(Math.floor((performance.now()-debut)*1), image.width, image.height);
+
+      // console.log(r,g,b, debut-performance.now())
+
+      switch(action){
+        case 1:
+          setColor(rgb);
+        break;
+        case 2:
+          video.style.boxShadow = "0px 0px 100px rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
+        break;
+        default:
+          video.style.boxShadow = "none";
+          // back.css("background-color",originalColor);
+      }
     }
+
 
     if(action) {
       requestAnimationFrame(snap);
@@ -167,14 +176,16 @@ function create() {
   bar.appendChild(button);
 }
 
-if(document.getElementsByTagName("video")){
+if(location.pathname == "/watch"){
   create();
 }
 
-window.onhashchange = function(){
-  if(document.getElementsByTagName("video")){
+setInterval(function(){
+  if(location.href != href && location.pathname == "/watch" && !created){
     create();
+    created = true;
   }
-}
+  href = location.href;
+},1000);
 
 

@@ -1,6 +1,6 @@
 {
-  "name" : "Youtube Bling",
-  "version" : "0.1",
+  "name" : "Bling your Tube",
+  "version" : "0.2",
   "description" : "Bling bling",
   "permissions" : [
     "activeTab"
@@ -11,8 +11,8 @@
   "content_scripts" : [
     {
       "matches" : [
-         "http://www.youtube.com/watch*",
-         "https://www.youtube.com/watch*"
+         "http://www.youtube.com/*",
+         "https://www.youtube.com/*"
       ],
       "js" : [ "jquery.min.js", "glow.js" ],
       "css" : [ "style.css" ],
