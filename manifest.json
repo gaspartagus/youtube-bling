@@ -1,12 +1,12 @@
 {
   "name" : "Bling your Tube",
-  "version" : "0.2",
+  "version" : "0.2.1",
   "description" : "Bling bling",
   "permissions" : [
     "activeTab"
   ],
   "icons" : {
-    "128" : "youtube.png"
+    "128" : "saturated.png"
   },
   "content_scripts" : [
     {

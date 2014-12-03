@@ -163,17 +163,18 @@ function create() {
   function setColor(rgb){
     back.style.backgroundColor = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
   }
+  var button = document.querySelector(".ytp-button-bling");
+  if(!button){
+    button = document.createElement("button");
+    button.setAttribute("class","ytp-button ytp-button-bling");
+    button.innerHTML = "B";
+    bar.appendChild(button);
 
-  var button = document.createElement("button");
-  button.setAttribute("class","ytp-button ytp-button-bling");
-  button.innerHTML = "B";
-
-  button.addEventListener("click",function(){
-    console.log("click");
-    trigger();
-  });
-
-  bar.appendChild(button);
+    button.addEventListener("click",function(){
+      console.log("click");
+      trigger();
+    });
+  }
 }
 
 if(location.pathname == "/watch"){
