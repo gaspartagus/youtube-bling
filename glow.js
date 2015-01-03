@@ -1,5 +1,3 @@
-console.log("glow",$("body"));
-
 
 function sum(arr){
   return _.reduce(arr,function(s,n) {return s+n;});
@@ -64,11 +62,12 @@ var ratio = 2,
     satRatios = [1,1.2,1.8], // saturation ratios
     // 0: black, 1: no change, Infinity: pure color
     width = 100, // sampling ratio
-    actions = ["Stop","Extend","Glow"],
+    actions = ["Stop","Color"],
     action = 0,
 
     href = location.href,
-    created = false;
+    created = false,
+    wasFullScreen = true;
 
 function create() {
 
@@ -77,8 +76,12 @@ function create() {
   var canvas = document.createElement("canvas");
 
   var back = document.getElementById("theater-background");
+  var fullScreenBack = document.querySelector(".html5-video-container");
+  console.log("fullScreenBack glow.js",fullScreenBack);
 
   var bar = document.getElementsByClassName("html5-player-chrome")[0];
+
+  var playerApi = document.getElementById("player-api");
 
   var context = canvas.getContext("2d");
 
@@ -133,11 +136,9 @@ function create() {
         case 1:
           setColor(rgb);
         break;
-        case 2:
-          video.style.boxShadow = "0px 0px 100px rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
-        break;
         default:
           video.style.boxShadow = "none";
+          playerApi.style.backgroundColor = "#1B1B1B1B";
           // back.css("background-color",originalColor);
       }
     }
@@ -150,18 +151,28 @@ function create() {
 
   function trigger(){
 
-    video.style.boxShadow = "none";
-    back.style.backgroundColor = "transparent";
-
     action = (action+1) % actions.length;
     if(action) {
+      back.style.backgroundColor = "transparent";
+      playerApi.style.backgroundColor = "transparent";
+
       requestAnimationFrame(snap);
+    } else {
+      back.style.backgroundColor = "#1B1B1B";
+      playerApi.style.backgroundColor = "#1B1B1B";
+      fullScreenBack.style.backgroundColor = "black";
     }
     return actions[(action+1) % actions.length];
   }
 
   function setColor(rgb){
-    back.style.backgroundColor = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
+    var color = "rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",1)";
+    if(document.webkitIsFullScreen) {
+      fullScreenBack.style.backgroundColor = color;
+    } else {
+      back.style.backgroundColor = color;
+      fullScreenBack.style.backgroundColor = "transparent";
+    }
   }
   var button = document.querySelector(".ytp-button-bling");
   if(!button){

@@ -24,12 +24,13 @@
   transition-duration: 0s !important;
 }
 
-#player-api,
 .html5-video-player,
-.html5-player-chrome,
-.html5-video-container {
+.html5-player-chrome {
   background-color: transparent !important;
-  overflow: visible !important;
+}
+
+#player-api{
+  background-color: #1B1B1B;
 }
 
 .ytp-button-bling{
